@@ -1,0 +1,20 @@
+= PostLogSQL
+
+In brief, PostLogSQL goal is to save postfix logs into a MySQL database.
+This is very useful if you send an email with your software using the smtp server on localhost, which relay the mail to other servers. In this case you can't directly check the real shipping of the message.
+
+If PostLogSQL is running in the deliver servers and all its instances are writing on the same MySQL server, using the <message-id> header (set from your software) you can check the shipping status.
+
+== Installation
+
+1) Puts the files in /opt/postlogsql (if you choose a different path change it into master.rb and postlogsql.rb)
+
+2) Create a database and import database.sql:
+     ~$ mysql -u user -p db_name < database.sql 
+
+3) Configure mysqlconnector.rb with your MySQL parameters
+
+4) Install rubygems, the 'daemons' gem and the ruby-mysql library
+
+5) run it:
+     ~$ ruby master.rb start
