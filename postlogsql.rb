@@ -36,8 +36,9 @@ class MailLogParser
 	def fifo_build
 		producer = Thread.new do
 			IO.popen(@@file2parse) do |pipe|
+			  # Saves child pid
 				pidfile = File.new('/var/run/postlogsql.pid', 'w')
-				pidfile.puts(Process.pid)
+				pidfile.puts(pipe.pid)
 				pidfile.close	
    				pipe.sync = true
    				while str = pipe.gets
