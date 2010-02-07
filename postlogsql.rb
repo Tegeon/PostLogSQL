@@ -46,6 +46,13 @@ class MailLogParser
 		@@parser = ParserLog.new
 		@@pidfile = File.new('/var/run/postlogsql_child.pid', 'w')
 	end
+	
+	def at_exit
+		@@pidfile = File.new('/var/run/postlogsql_child.pid', 'w')
+		pid = @@pidfile.readline.to_i
+		puts "Sending signal 9 to process with pid #{pid}"
+		Process.kill(9,pid)
+	end
 
 	def fifo_build
 		producer = Thread.new do
