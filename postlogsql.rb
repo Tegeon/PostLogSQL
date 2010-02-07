@@ -44,15 +44,15 @@ class MailLogParser
 		@@file2parse = file2parse
 		@queue = Queue.new
 		@@parser = ParserLog.new
+		@@pidfile = File.new('/var/run/postlogsql_child.pid', 'w')
 	end
 
 	def fifo_build
 		producer = Thread.new do
 			IO.popen(@@file2parse) do |pipe|
 			  # Saves child pid
-				pidfile = File.new('/var/run/postlogsql.pid', 'w')
-				pidfile.puts(pipe.pid)
-				pidfile.close	
+				@@pidfile.puts(pipe.pid)
+				@@pidfile.close	
    				pipe.sync = true
    				while str = pipe.gets
 #     					@queue << str

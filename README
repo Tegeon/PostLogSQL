@@ -7,7 +7,7 @@ If PostLogSQL is running in the deliver servers and all its instances are writin
 
 == Installation
 
-1) Puts the files in /opt/postlogsql (if you choose a different path change it into master.rb and postlogsql.rb)
+1) Put the files in /opt/postlogsql (if you choose a different path change it into master.rb and postlogsql.rb)
 
 2) Create a database and import database.sql:
      ~$ mysql -u user -p db_name < database.sql 
