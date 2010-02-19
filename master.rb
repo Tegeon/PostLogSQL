@@ -13,12 +13,9 @@
 # along with PostLogSQL.  If not, see <http://www.gnu.org/licenses/>.
     
 $LOAD_PATH << '/opt/postlogsql'
-$DEBUG = true
 
 require 'rubygems'        # if you use RubyGems
 require 'daemons'
-
-require 'configurations.rb'
 
 Daemons.run('postlogsql.rb')
 

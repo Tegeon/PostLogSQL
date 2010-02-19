@@ -12,7 +12,9 @@
 # along with PostLogSQL.  If not, see <http://www.gnu.org/licenses/>.
 
 $LOAD_PATH << '/opt/postlogsql'
+$DEBUG = true
 
+require 'configurations.rb'
 require 'thread'
 require 'parser.rb'
 
