@@ -64,7 +64,7 @@ class MailLogParser
    				while str = pipe.gets
 #     					@queue << str
 #					puts "START #{str} STOP"
-          puts "Leggo:\n".str."\n" if $DEBUG
+          puts "Leggo:\n"+str+"\n" if $DEBUG
 					@@parser.parseLog(str)
 	   			end
 			end
