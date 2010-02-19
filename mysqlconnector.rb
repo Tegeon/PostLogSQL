@@ -1,4 +1,3 @@
-
 # This file is part of PostLogSQL.
 # PostLogSQL is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -12,9 +11,7 @@
 # along with PostLogSQL.  If not, see <http://www.gnu.org/licenses/>.
 
 require 'mysql'
-require "socket"
-
-
+require 'socket'
 
 class DBConnector
 	def initialize
@@ -23,7 +20,7 @@ class DBConnector
 		# username
 		# password
 		# nome del database
-		@con = Mysql.new('db_host', 'db_user', 'db_pass','db_name')
+		@con = Mysql.new($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME)
 		
 		@myhostname = Socket.gethostname
 		# query di selezione
@@ -42,28 +39,33 @@ class DBConnector
 
 	def insert(id)
 #		puts "insert into postfix_logs (postfix_id) VALUES (\'#{id}\');"
-		result = @con.query("insert into postfix_logs (postfix_id, hostname) VALUES (\'#{id}\',\'#{@myhostname}\')")
-#		puts result.inspect
+    query = "insert into postfix_logs (postfix_id, hostname) VALUES (\'#{id}\',\'#{@myhostname}\')"
+    puts query if $DEBUG
+		result = @con.query(query)
+    puts result.inspect if $DEBUG
 	end
 
 	def update(id, messageid) 
-		result = @con.query("update postfix_logs set message_id= \'#{messageid}\' where postfix_id=\'#{id}\' AND hostname=\'#{@myhostname}\'")
-#		puts result.inspect
+	  query = "update postfix_logs set message_id= \'#{messageid}\' where postfix_id=\'#{id}\' AND hostname=\'#{@myhostname}\'"
+		result = @con.query(query)
+    puts result.inspect if $DEBUG
 	end
 
 	def good_delivered(id,status)
-		result = @con.query("update postfix_logs set status=\'yes\', status=\'#{status}\' where postfix_id=\'#{id}\' AND hostname=\'#{@myhostname}\'")
-#		puts result.inspect
+	  query = "update postfix_logs set status=\'yes\', status=\'#{status}\' where postfix_id=\'#{id}\' AND hostname=\'#{@myhostname}\'"
+		result = @con.query(query)
+    puts result.inspect if $DEBUG
 
 	end
 
 	def bad_delivered(id,status)
-		result = @con.query("update postfix_logs set status=\'no\', status=\'#{status}\' where postfix_id=\'#{id}\' AND hostname=\'#{@myhostname}\'")
-	#	puts result.inspect
+	  query = "update postfix_logs set status=\'no\', status=\'#{status}\' where postfix_id=\'#{id}\' AND hostname=\'#{@myhostname}\'"
+		result = @con.query(query)
+	  puts result.inspect if $DEBUG
 	end
 	
 	def update_status(id,status)
-		if status.rindex('sent') ==nil
+		if status.rindex('sent') == nil
 			bad_delivered(id,status)
 		else
 			good_delivered(id,status)

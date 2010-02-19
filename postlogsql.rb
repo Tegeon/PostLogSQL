@@ -50,7 +50,7 @@ class MailLogParser
 	def at_exit
 		@@pidfile = File.new('/var/run/postlogsql_child.pid', 'w')
 		pid = @@pidfile.readline.to_i
-		puts "Sending signal 9 to process with pid #{pid}"
+		puts "Sending signal 9 to process with pid #{pid}" if $DEBUG
 		Process.kill(9,pid)
 	end
 
@@ -64,6 +64,7 @@ class MailLogParser
    				while str = pipe.gets
 #     					@queue << str
 #					puts "START #{str} STOP"
+          puts "Leggo:\n".str."\n" if $DEBUG
 					@@parser.parseLog(str)
 	   			end
 			end

@@ -1,5 +1,3 @@
-#!/usr/bin/env ruby
-
 # This file is part of PostLogSQL.
 # PostLogSQL is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -11,22 +9,8 @@
 # GNU General Public License for more details.
 # You should have received a copy of the GNU General Public License
 # along with PostLogSQL.  If not, see <http://www.gnu.org/licenses/>.
-    
-$LOAD_PATH << '/opt/postlogsql'
-$DEBUG = true
 
-require 'rubygems'        # if you use RubyGems
-require 'daemons'
-
-require 'configurations.rb'
-
-Daemons.run('postlogsql.rb')
-
-#require 'postlogsql.rb'
-#pid = fork do
-#	Signal.trap('HUP', 'IGNORE') # Don't die upon logout
-#	parser = MailLogParser.new("tail -F -n 0 /var/log/mail.log")
-#	p = parser.fifo_build
-#	p.join
-#end
-#Process.detach(pid)
+$DB_HOST = 'db_host'
+$DB_USER = 'db_user'
+$DB_PASS = 'db_pass'
+$DB_NAME = 'db_name'
