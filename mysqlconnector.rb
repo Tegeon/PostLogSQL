@@ -47,21 +47,33 @@ class DBConnector
 
 	def update(id, messageid) 
 	  query = "update postfix_logs set message_id= \'#{messageid}\' where postfix_id=\'#{id}\' AND hostname=\'#{@myhostname}\'"
-		result = @con.query(query)
-    puts result.inspect if $DEBUG
+		begin
+			result = @con.query(query)
+    		puts result.inspect if $DEBUG
+		rescue Mysql::Error => e
+			puts "Error Message: #{e.error}"
+		end
 	end
 
 	def good_delivered(id,status)
 	  query = "update postfix_logs set status=\'yes\', delivery_success=\'#{status}\' where postfix_id=\'#{id}\' AND hostname=\'#{@myhostname}\'"
-		result = @con.query(query)
-    puts result.inspect if $DEBUG
+		begin
+			result = @con.query(query)
+    		puts result.inspect if $DEBUG
+		rescue Mysql::Error => e
+			puts "Error Message: #{e.error}"
+		end
 
 	end
 
 	def bad_delivered(id,status)
 	  query = "update postfix_logs set status=\'no\', delivery_success=\'#{status}\' where postfix_id=\'#{id}\' AND hostname=\'#{@myhostname}\'"
-		result = @con.query(query)
-	  puts result.inspect if $DEBUG
+		begin
+			result = @con.query(query)
+	  		puts result.inspect if $DEBUG
+		rescue Mysql::Error => e
+			puts "Error Message: #{e.error}"
+		end
 	end
 	
 	def update_status(id,status)
