@@ -19,17 +19,17 @@ class ParserLog
 	end
 	def parseLog(riga)
 		id = /postfix\/smtpd\[\d*\]: ([aA-Z0-9]+): client=tomcat.mailalyzer.com/.match(riga)
-		unless id == nil
+		unless id[1] == nil
 	    puts "Nuovo id "+id[1] if $DEBUG
 		  @mysql.insert(id[1])
 	  end
 		id = /postfix\/cleanup\[\d*\]: ([aA-Z0-9]+): message-id=(.*)/.match(riga)
-		unless id == nil
+		unless id[1] == nil && id[2] == nil
 	    puts "Id "+id[1]+" Message-Id "+id[2]  if $DEBUG
 		  @mysql.update(id[1],id[2])
 	  end
 		id = /postfix\/smtp\[\d*\]: ([aA-Z0-9]+): to=.*status=(.*)/.match(riga)
-		unless id == nil
+		unless id[1] == nil && id[2] == nil
 	    puts "Id "+id[1]+" status "+id[2] if $DEBUG
 		  @mysql.update_status(id[1],id[2])
 		end
