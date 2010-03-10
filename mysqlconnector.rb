@@ -52,14 +52,14 @@ class DBConnector
 	end
 
 	def good_delivered(id,status)
-	  query = "update postfix_logs set status=\'yes\', status=\'#{status}\' where postfix_id=\'#{id}\' AND hostname=\'#{@myhostname}\'"
+	  query = "update postfix_logs set status=\'yes\', delivery_success=\'#{status}\' where postfix_id=\'#{id}\' AND hostname=\'#{@myhostname}\'"
 		result = @con.query(query)
     puts result.inspect if $DEBUG
 
 	end
 
 	def bad_delivered(id,status)
-	  query = "update postfix_logs set status=\'no\', status=\'#{status}\' where postfix_id=\'#{id}\' AND hostname=\'#{@myhostname}\'"
+	  query = "update postfix_logs set status=\'no\', delivery_success=\'#{status}\' where postfix_id=\'#{id}\' AND hostname=\'#{@myhostname}\'"
 		result = @con.query(query)
 	  puts result.inspect if $DEBUG
 	end
