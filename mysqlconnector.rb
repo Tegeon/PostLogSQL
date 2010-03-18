@@ -55,10 +55,10 @@ class DBConnector
 		end
 	end
 
-	def good_delivered(id,status, status_code)
+	def good_delivered(id, status, status_code)
 	  query = "update postfix_logs set delivery_success=\'yes\', status=\'#{status}\', status_code=\'#{status_code}\' where postfix_id=\'#{id}\' AND hostname=\'#{@myhostname}\'"
 		begin
-			result = @con.query(query, status_code)
+			result = @con.query(query)
     		puts result.inspect if $DEBUG
 		rescue Mysql::Error => e
 			puts "Error Message: #{e.error}"
