@@ -28,10 +28,12 @@ class ParserLog
 	    puts "Id "+id[1]+" Message-Id "+id[2]  if $DEBUG
 		  @mysql.update(id[1],id[2])
 	  end
-		id = /postfix\/smtp\[\d*\]: ([aA-Z0-9]+): to=.*status=(.*)/.match(riga)
-		unless id==nil || id[1] == nil || id[2] == nil
-	    puts "Id "+id[1]+" status "+id[2] if $DEBUG
-		  @mysql.update_status(id[1],id[2])
+		id = /postfix\/smtp\[\d*\]: ([aA-Z0-9]+): to=.*status=(.*\(([0-9]{3})?(.*)\))/.match(riga)
+		unless id==nil || id[1] == nil || id[2] == nil 
+	    puts "Id "+id[1]+" status "+id[2] if $DEBUG	
+		  code = 0
+		  code = id[3] unless id[3] == nil
+		  @mysql.update_status(id[1],id[2], id[3])
 		end
 	end
 end
