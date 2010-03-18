@@ -18,29 +18,6 @@ require 'configurations.rb'
 require 'thread'
 require 'parser.rb'
 
-def startDaemon
-	exit if fork                   # Parent exits, child continues.
-	Process.setsid                 # Become session leader.
-	exit if fork                   # Zap session leader. See [1].
-	Dir.chdir "/"                  # Release old working directory.
-	File.umask 0000                # Ensure sensible umask. Adjust as needed.
-	
-	$stdout.reopen(File.new("/tmp/daemon.log","w"))
-	$stderr.reopen($stdout)
-	
-	STDIN.reopen "/dev/null"       # Free file descriptors and
-	#STDOUT.reopen "/dev/null", "a" # point them somewhere sensible.
-	#STDERR.reopen STDOUT           # STDOUT/ERR should better go to a logfile.
-	
-	parseCmdLine(ARGV)
-	
-	while 1
-	         puts "--MARK--\n" if Settings.instance().getDebugLevel() > 1
-	         $stdout.flush
-	         sleep 10
-	end
-end
-
 class MailLogParser
 	def initialize(file2parse)
 		@@file2parse = file2parse

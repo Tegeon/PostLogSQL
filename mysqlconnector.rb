@@ -55,10 +55,10 @@ class DBConnector
 		end
 	end
 
-	def good_delivered(id,status)
-	  query = "update postfix_logs set delivery_success=\'yes\', status=\'#{status}\' where postfix_id=\'#{id}\' AND hostname=\'#{@myhostname}\'"
+	def good_delivered(id,status, status_code)
+	  query = "update postfix_logs set delivery_success=\'yes\', status=\'#{status}\', status_code=\'#{status_code}\' where postfix_id=\'#{id}\' AND hostname=\'#{@myhostname}\'"
 		begin
-			result = @con.query(query)
+			result = @con.query(query, status_code)
     		puts result.inspect if $DEBUG
 		rescue Mysql::Error => e
 			puts "Error Message: #{e.error}"
@@ -67,7 +67,7 @@ class DBConnector
 	end
 
 	def bad_delivered(id,status)
-	  query = "update postfix_logs set delivery_success=\'no\', status=\'#{status}\' where postfix_id=\'#{id}\' AND hostname=\'#{@myhostname}\'"
+	  query = "update postfix_logs set delivery_success=\'no\', status=\'#{status}\', status_code=\'#{status_code}\' where postfix_id=\'#{id}\' AND hostname=\'#{@myhostname}\'"
 		begin
 			result = @con.query(query)
 	  		puts result.inspect if $DEBUG
@@ -76,11 +76,11 @@ class DBConnector
 		end
 	end
 	
-	def update_status(id,status)
+	def update_status(id,status, status_code = 0)
 		if status.rindex('sent') == nil
-			bad_delivered(id,status)
+			bad_delivered(id,status, status_code.to_i)
 		else
-			good_delivered(id,status)
+			good_delivered(id,status, status_code.to_i)
 		end
 	end
 end
