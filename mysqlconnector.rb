@@ -40,9 +40,12 @@ class DBConnector
 	def insert(id)
 #		puts "insert into postfix_logs (postfix_id) VALUES (\'#{id}\');"
     query = "insert into postfix_logs (postfix_id, hostname) VALUES (\'#{id}\',\'#{@myhostname}\')"
-    puts query if $DEBUG
+	 begin
 		result = @con.query(query)
-    puts result.inspect if $DEBUG
+      puts result.inspect if $DEBUG
+	 rescue Mysql::Error => e
+         puts "Error Message: #{e.error}"
+	 end
 	end
 
 	def update(id, messageid) 
