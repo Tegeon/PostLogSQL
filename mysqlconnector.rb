@@ -39,7 +39,7 @@ class DBConnector
 
 	def insert(id)
 #		puts "insert into postfix_logs (postfix_id) VALUES (\'#{id}\');"
-    query = "insert into postfix_logs (postfix_id, hostname, start_time) VALUES (\'#{id}\',\'#{@myhostname}\', '"+Time.now.to_s+"')"
+    query = "insert into postfix_logs (postfix_id, hostname, start_time) VALUES (\'#{id}\',\'#{@myhostname}\', "+Time.now.strftime("%Y-%m-%d %H:%M:%S")+")"
 	 begin
 		result = @con.query(query)
       puts result.inspect if $DEBUG
@@ -59,7 +59,7 @@ class DBConnector
 	end
 
 	def good_delivered(id, status, status_code)
-	  query = "update postfix_logs set delivery_success='yes', status='#{status}', status_code='#{status_code}', last_update='"+Time.now.to_s+"' where postfix_id='#{id}' AND hostname='#{@myhostname}'"
+	  query = "update postfix_logs set delivery_success='yes', status='#{status}', status_code='#{status_code}', last_update="+Time.now.strftime("%Y-%m-%d %H:%M:%S")+" where postfix_id='#{id}' AND hostname='#{@myhostname}'"
 		begin
 			result = @con.query(query)
     		puts result.inspect if $DEBUG
@@ -70,7 +70,7 @@ class DBConnector
 	end
 
 	def bad_delivered(id, status, status_code)
-	  query = "update postfix_logs set delivery_success='no', status='#{status}', status_code='#{status_code}', last_update='"+Time.now.to_s+"'  where postfix_id='#{id}' AND hostname='#{@myhostname}'"
+	  query = "update postfix_logs set delivery_success='no', status='#{status}', status_code='#{status_code}', last_update="+Time.now.strftime("%Y-%m-%d %H:%M:%S")+"  where postfix_id='#{id}' AND hostname='#{@myhostname}'"
 		begin
 			result = @con.query(query)
 	  		puts result.inspect if $DEBUG
