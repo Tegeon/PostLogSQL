@@ -39,7 +39,7 @@ class DBConnector
 
 	def insert(id)
 #		puts "insert into postfix_logs (postfix_id) VALUES (\'#{id}\');"
-    query = "insert into postfix_logs (postfix_id, hostname) VALUES (\'#{id}\',\'#{@myhostname}\')"
+    query = "insert into postfix_logs (postfix_id, hostname, start_time) VALUES (\'#{id}\',\'#{@myhostname}\', '"+Time.now.to_s+"')"
 	 begin
 		result = @con.query(query)
       puts result.inspect if $DEBUG
@@ -59,7 +59,7 @@ class DBConnector
 	end
 
 	def good_delivered(id, status, status_code)
-	  query = "update postfix_logs set delivery_success=\'yes\', status=\'#{status}\', status_code=\'#{status_code}\' where postfix_id=\'#{id}\' AND hostname=\'#{@myhostname}\'"
+	  query = "update postfix_logs set delivery_success='yes', status='#{status}', status_code='#{status_code}', last_update='"+Time.now.to_s+"' where postfix_id='#{id}' AND hostname='#{@myhostname}'"
 		begin
 			result = @con.query(query)
     		puts result.inspect if $DEBUG
@@ -69,8 +69,8 @@ class DBConnector
 
 	end
 
-	def bad_delivered(id,status)
-	  query = "update postfix_logs set delivery_success=\'no\', status=\'#{status}\', status_code=\'#{status_code}\' where postfix_id=\'#{id}\' AND hostname=\'#{@myhostname}\'"
+	def bad_delivered(id, status, status_code)
+	  query = "update postfix_logs set delivery_success='no', status='#{status}', status_code='#{status_code}', last_update='"+Time.now.to_s+"'  where postfix_id='#{id}' AND hostname='#{@myhostname}'"
 		begin
 			result = @con.query(query)
 	  		puts result.inspect if $DEBUG
@@ -79,7 +79,7 @@ class DBConnector
 		end
 	end
 	
-	def update_status(id,status, status_code = 0)
+	def update_status(id, status, status_code = 0)
 		if status.rindex('sent') == nil
 			bad_delivered(id,status, status_code.to_i)
 		else

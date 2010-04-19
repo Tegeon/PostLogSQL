@@ -8,5 +8,7 @@ CREATE TABLE `postfix_logs` (
 	`status` text NOT NULL,
 	`status_code` int unsigned NULL,
 	`hostname` varchar(128) NOT NULL default '',
+	`start_time` datetime DEFAULT NULL,
+	`last_update` datetime DEFAULT NULL,
 	PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
