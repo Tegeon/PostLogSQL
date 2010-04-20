@@ -81,6 +81,7 @@ class DBConnector
 	
 	def update_status(id, status, status_code = 0)
 		if status.rindex('sent') == nil
+		  status_code = $1 if status.match(/(\s[0-9]{3}\s)/)
 			bad_delivered(id,status, status_code.to_i)
 		else
 			good_delivered(id,status, status_code.to_i)
