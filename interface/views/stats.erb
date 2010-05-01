@@ -1,0 +1,48 @@
+<% @page = 0 if @page.nil? %>
+
+<div class="content-box"><!-- Start Content Box -->
+	
+	<div class="content-box-header">
+		
+		<h3>Delivery status</h3>
+		<div class="clear"></div>
+		
+	</div> <!-- End .content-box-header -->
+	
+	<div class="content-box-content">
+		<b>MAILERS STATS</b>
+		<ul>
+		<% @stats[:mailers].each do |hostname, mailer| %>
+			<b><%= hostname %></b><br /> 
+				Inviate correttamente: <%= @stats[:mailers][hostname][:sent] %> (~<%= @stats[:mailers][hostname][:sent]*100/(@stats[:mailers][hostname][:sent]+@stats[:mailers][hostname][:failed]) %>%)<br />
+				Non inviate correttamente: <%= @stats[:mailers][hostname][:failed] %> (~<%= @stats[:mailers][hostname][:failed]*100/(@stats[:mailers][hostname][:sent]+@stats[:mailers][hostname][:failed])%>%)<br /><br />
+		<% end %>
+		</ul>
+		
+		<b>CODES</b>
+		<ul>
+		<% @stats[:codes].each do |code| %>
+			<li><%= code[:num] %> - <%= h(code[:descr]) %>(<%= code[:code] %>)</li>
+		<% end %>
+		</ul>
+		
+		<b>DEFERRED (<%= @stats[:deferred].size %>)</b>
+		<ul>
+		<% @stats[:deferred].each do |deferred| %>
+			<% m = deferred[:message].match(/[w+]*\(([a-zA-Z].*)\)[w+]*/) %>
+			<% deferred[:message] = m[1].nil? ? deferred[:message] : m[1] %>
+			<li><%= deferred[:num] %> - <%= h(deferred[:message]) %></li>
+		<% end %>
+		</ul>
+		
+		<b>BOUNCED (<%= @stats[:bounced].size %>)</b>
+		<ul>
+		<% @stats[:bounced].each do |bounced| %>
+			<% m = bounced[:message].match(/[w+]*\(([a-zA-Z].*)\)[w+]*/) %>
+			<% bounced[:message] = m[1].nil? ? bounced[:message] : m[1] %>
+			<li><%= bounced[:num] %> - <%= h(bounced[:message]) %></li>
+		<% end %>
+		</ul>
+		<div class="clear"></div>
+	</div>
+</div>

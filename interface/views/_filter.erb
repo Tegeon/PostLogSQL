@@ -1,0 +1,11 @@
+<div class="bulk-actions align-left">
+	<form id="filter_form" action="/delivers/filter" method="post">
+		<select name="filter_type">
+			<option value="option1">Filter by...</option>
+			<option value="status">Status</option>
+			<option value="message_id">Message ID</option>
+		</select>
+		<input class="text-input" name="filter_value" value="Insert filter value..." onfocus="$(this).val('')">
+		<a class="button" href="#" onclick="$('#filter_form').submit();">Apply filter</a>
+	</form>
+</div>

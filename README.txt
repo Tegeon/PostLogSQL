@@ -5,7 +5,12 @@ This is very useful if you send an email with your software using the smtp serve
 
 If PostLogSQL is running in the deliver servers and all its instances are writing on the same MySQL server, using the <message-id> header (set from your software) you can check the shipping status.
 
+The PostLogSQL scripts are into /daemon folder.
+The /interface folder contains a simple web interface, useful to check delivery status. The app is written with Sinatra and uses ActiveRecord (See "Installation").
+
 == Installation
+
+=== Daemon
 
 1) Put the files in /opt/postlogsql (if you choose a different path change it into master.rb and postlogsql.rb)
 
@@ -18,6 +23,20 @@ If PostLogSQL is running in the deliver servers and all its instances are writin
 
 5) run it:
      ~$ ruby master.rb start
+
+=== Web App
+
+1) Install RubyGems
+
+2) Install Sinatra and ActiveRecord:
+    ~$ sudo gem install sinatra activerecord
+
+3) Configure index.rb with your database values
+
+4) Launch the app:
+    ~$ ruby index.rb
+
+5) Open your browser and go to: http://127.0.0.1:4567
 
 == License
 
