@@ -33,11 +33,21 @@ class DBConnector
 		#con.close
 	end
 
+  def is_connection_alive?
+    return !@con.nil?
+  end
+  
+  def estabilish_connection
+    is_connection_alive? or @con = Mysql.new($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME)
+  end
+  
 	def at_exit
 		@con.close
 	end
 
 	def insert(id)
+	  self.estabilish_connection
+	  
 #		puts "insert into postfix_logs (postfix_id) VALUES (\'#{id}\');"
     query = "insert into postfix_logs (postfix_id, hostname, start_time) VALUES (\'#{id}\',\'#{@myhostname}\', '"+Time.now.strftime("%Y-%m-%d %H:%M:%S")+"')"
 	 begin
@@ -49,6 +59,8 @@ class DBConnector
 	end
 
 	def update(id, messageid) 
+	  self.estabilish_connection
+	  
 	  query = "update postfix_logs set message_id= \'#{messageid}\' where postfix_id=\'#{id}\' AND hostname=\'#{@myhostname}\'"
 		begin
 			result = @con.query(query)
@@ -80,6 +92,8 @@ class DBConnector
 	end
 	
 	def update_status(id, status, status_code = 0)
+	  self.estabilish_connection
+	  
 		if status.rindex('sent') == nil
 		  status_code = $1 if status.match(/(\s[0-9]{3}\s)/)
 			bad_delivered(id,status, status_code.to_i)
