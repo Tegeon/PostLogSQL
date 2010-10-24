@@ -37,6 +37,3 @@ class ParserLog
 		end
 	end
 end
-
-#file =File.new("/tmp/mail.log")
-#file.readlines.each{|r| parseLog(r)}

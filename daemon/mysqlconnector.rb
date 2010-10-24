@@ -10,7 +10,7 @@
 # You should have received a copy of the GNU General Public License
 # along with PostLogSQL.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'mysql'
+require 'mysql2'
 require 'socket'
 
 class DBConnector
@@ -20,17 +20,9 @@ class DBConnector
 		# username
 		# password
 		# nome del database
-		@con = Mysql.new($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME)
+  	@con = Mysql2::Client.new($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME)
 		
 		@myhostname = Socket.gethostname
-		# query di selezione
-		#rs = con.query('select field from tabella')
-		
-		# ciclo per l'estrazione dei dati
-		#rs.each_hash {|h| puts h['field']}
-		
-		# chiusura della connessione
-		#con.close
 	end
 
   def is_connection_alive?
@@ -48,14 +40,13 @@ class DBConnector
 	def insert(id)
 	  self.estabilish_connection
 	  
-#		puts "insert into postfix_logs (postfix_id) VALUES (\'#{id}\');"
     query = "insert into postfix_logs (postfix_id, hostname, start_time) VALUES (\'#{id}\',\'#{@myhostname}\', '"+Time.now.strftime("%Y-%m-%d %H:%M:%S")+"')"
-	 begin
-		result = @con.query(query)
+	  begin
+		  result = @con.query(query)
       puts result.inspect if $DEBUG
-	 rescue Mysql::Error => e
-         puts "Error Message: #{e.error}"
-	 end
+	  rescue Mysql2::Error => e
+      puts "Error Message: #{e.error}"
+	  end
 	end
 
 	def update(id, messageid) 
@@ -64,8 +55,8 @@ class DBConnector
 	  query = "update postfix_logs set message_id= \'#{messageid}\' where postfix_id=\'#{id}\' AND hostname=\'#{@myhostname}\'"
 		begin
 			result = @con.query(query)
-    		puts result.inspect if $DEBUG
-		rescue Mysql::Error => e
+    	puts result.inspect if $DEBUG
+		rescue Mysql2::Error => e
 			puts "Error Message: #{e.error}"
 		end
 	end
@@ -74,8 +65,8 @@ class DBConnector
 	  query = "update postfix_logs set delivery_success='yes', status='#{status}', status_code='#{status_code}', last_update='"+Time.now.strftime("%Y-%m-%d %H:%M:%S")+"' where postfix_id='#{id}' AND hostname='#{@myhostname}'"
 		begin
 			result = @con.query(query)
-    		puts result.inspect if $DEBUG
-		rescue Mysql::Error => e
+    	puts result.inspect if $DEBUG
+		rescue Mysql2::Error => e
 			puts "Error Message: #{e.error}"
 		end
 
@@ -85,8 +76,8 @@ class DBConnector
 	  query = "update postfix_logs set delivery_success='no', status='#{status}', status_code='#{status_code}', last_update='"+Time.now.strftime("%Y-%m-%d %H:%M:%S")+"'  where postfix_id='#{id}' AND hostname='#{@myhostname}'"
 		begin
 			result = @con.query(query)
-	  		puts result.inspect if $DEBUG
-		rescue Mysql::Error => e
+	  	puts result.inspect if $DEBUG
+		rescue Mysql2::Error => e
 			puts "Error Message: #{e.error}"
 		end
 	end
