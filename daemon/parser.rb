@@ -42,7 +42,7 @@ class ParserLog
 		
 		unless id == nil || id[1] == nil || id[2] == nil
 	    puts "Id "+id[1]+" Message-Id "+id[2]  if $DEBUG
-	    @record = DeliveryRecord.where(:postfix_id => id[1], :hostname => @myhostname)
+	    @record = DeliveryRecord.where(:postfix_id => id[1], :hostname => @myhostname).first
 		  @record.update_attribute(:message_id, id[2])
 	  end
 		
@@ -52,7 +52,7 @@ class ParserLog
 	    puts "Id "+id[1]+" status "+id[2] if $DEBUG	
 		  code = 0
 		  code = id[3] unless id[3] == nil
-		  @record = DeliveryRecord.where(:postfix_id => id[1], :hostname => @myhostname)
+		  @record = DeliveryRecord.where(:postfix_id => id[1], :hostname => @myhostname).first
 		  @record.update_status(id[2], id[3])
 		end
 	end

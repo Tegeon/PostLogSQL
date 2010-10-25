@@ -33,6 +33,8 @@ ActiveRecord::Base.logger = Logger.new(File.open('database.log', 'a'))
 # which calls good_delivered or bad_delivered
 class DeliveryRecord < ActiveRecord::Base
 
+	set_table_name "postfix_logs"
+	
 	# The delivery went fine
 	def good_delivered(status, status_code)
 		self.update_attributes(:delivery_success => 'yes', :status => status, :status_code => status_code, :last_update => Time.now.strftime("%Y-%m-%d %H:%M:%S"))
@@ -40,7 +42,7 @@ class DeliveryRecord < ActiveRecord::Base
 
 	# Something wrong appened during delivery
 	def bad_delivered(status, status_code)
-		self.update_attributes(:delivery_success => 'yes', :status => status, :status_code => status_code, :last_update => Time.now.strftime("%Y-%m-%d %H:%M:%S"))
+		self.update_attributes(:delivery_success => 'no', :status => status, :status_code => status_code, :last_update => Time.now.strftime("%Y-%m-%d %H:%M:%S"))
 	end
 	
 	# Check the status then update
