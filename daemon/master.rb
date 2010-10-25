@@ -11,7 +11,11 @@
 # GNU General Public License for more details.
 # You should have received a copy of the GNU General Public License
 # along with PostLogSQL.  If not, see <http://www.gnu.org/licenses/>.
-    
+#
+# Author:: Matteo Rosi
+# Author:: Tommaso Visconti <tommaso.visconti@kreations.it>
+# License:: GPLv3
+ 
 $LOAD_PATH << '/opt/postlogsql'
 
 require 'rubygems'        # if you use RubyGems

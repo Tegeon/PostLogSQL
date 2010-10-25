@@ -1,4 +1,3 @@
-
 # This file is part of PostLogSQL.
 # PostLogSQL is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -10,11 +9,14 @@
 # GNU General Public License for more details.
 # You should have received a copy of the GNU General Public License
 # along with PostLogSQL.  If not, see <http://www.gnu.org/licenses/>.
+#
+# Author:: Matteo Rosi
+# Author:: Tommaso Visconti <tommaso.visconti@kreations.it>
+# License:: GPLv3
 
 $LOAD_PATH << '/opt/postlogsql'
 $DEBUG = true
 
-require 'configurations.rb'
 require 'thread'
 require 'parser.rb'
 

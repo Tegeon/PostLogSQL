@@ -1,4 +1,3 @@
-
 # This file is part of PostLogSQL.
 # PostLogSQL is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -10,30 +9,51 @@
 # GNU General Public License for more details.
 # You should have received a copy of the GNU General Public License
 # along with PostLogSQL.  If not, see <http://www.gnu.org/licenses/>.
+#
+# Author:: Matteo Rosi
+# Author:: Tommaso Visconti <tommaso.visconti@kreations.it>
+# License:: GPLv3
 
-require 'mysqlconnector.rb'
+require 'deliveryrecord.rb'
+require 'socket'
 
 class ParserLog
 	def initialize
-		@mysql = DBConnector.new
+		@myhostname = Socket.gethostname
 	end
+	
 	def parseLog(riga)
 		id = /postfix\/smtpd\[\d*\]: ([aA-Z0-9]+): client=tomcat.mailalyzer.com/.match(riga)
-		unless id==nil || id[1] == nil
+		
+		unless id == nil || id[1] == nil
 	    puts "Nuovo id "+id[1] if $DEBUG
-		  @mysql.insert(id[1])
+	    
+	    @record = DeliveryRecord.new
+		  
+		  @record.postfix_id = id[1]
+	  	@record.hostname = @myhostname
+	  	@record.start_time = Time.now.strftime("%Y-%m-%d %H:%M:%S")
+	  	
+	  	@record.save
+	  	
 	  end
+		
 		id = /postfix\/cleanup\[\d*\]: ([aA-Z0-9]+): message-id=(.*)/.match(riga)
-		unless id==nil || id[1] == nil || id[2] == nil
+		
+		unless id == nil || id[1] == nil || id[2] == nil
 	    puts "Id "+id[1]+" Message-Id "+id[2]  if $DEBUG
-		  @mysql.update(id[1],id[2])
+	    @record = DeliveryRecord.where(:postfix_id => id[1], :hostname => @myhostname)
+		  @record.update_attribute(:message_id, id[2])
 	  end
+		
 		id = /postfix\/smtp\[\d*\]: ([aA-Z0-9]+): to=.*status=(.*\(([0-9]{3})?(.*)\))/.match(riga)
-		unless id==nil || id[1] == nil || id[2] == nil 
+		
+		unless id == nil || id[1] == nil || id[2] == nil 
 	    puts "Id "+id[1]+" status "+id[2] if $DEBUG	
 		  code = 0
 		  code = id[3] unless id[3] == nil
-		  @mysql.update_status(id[1],id[2], id[3])
+		  @record = DeliveryRecord.where(:postfix_id => id[1], :hostname => @myhostname)
+		  @record.update_status(id[2], id[3])
 		end
 	end
 end
