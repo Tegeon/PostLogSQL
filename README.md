@@ -1,4 +1,4 @@
-= PostLogSQL
+# PostLogSQL
 
 In brief, PostLogSQL goal is to save postfix logs into a MySQL database.
 This is very useful if you send an email with your software using the smtp server on localhost, which relay the mail to other servers. In this case you can't directly check the real shipping of the message.
@@ -8,37 +8,38 @@ If PostLogSQL is running in the deliver servers and all its instances are writin
 The PostLogSQL scripts are into /daemon folder.
 The /interface folder contains a simple web interface, useful to check delivery status. The app is written with Sinatra and uses ActiveRecord (See "Installation").
 
-== Installation
+## Installation
 
-=== Daemon
+### Daemon
 
-1) Put the files in /opt/postlogsql (if you choose a different path change it into master.rb and postlogsql.rb)
+# Put the files in /opt/postlogsql (if you choose a different path change it into master.rb and postlogsql.rb)
+# Create a database and import database.sql:
 
-2) Create a database and import database.sql:
-     ~$ mysql -u user -p db_name < database.sql 
+	~$ mysql -u user -p db_name < database.sql 
 
-3) Configure mysqlconnector.rb with your MySQL parameters
+# Configure mysqlconnector.rb with your MySQL parameters
+# Install rubygems, the 'daemons' gem and the ruby-mysql library
+# run it:
 
-4) Install rubygems, the 'daemons' gem and the ruby-mysql library
+	~$ ruby master.rb start
 
-5) run it:
-     ~$ ruby master.rb start
+### Web App
 
-=== Web App
+# Install RubyGems
 
-1) Install RubyGems
+# Install Sinatra and ActiveRecord:
 
-2) Install Sinatra and ActiveRecord:
-    ~$ sudo gem install sinatra activerecord
+	~$ sudo gem install sinatra activerecord
 
-3) Configure index.rb with your database values
+# Configure index.rb with your database values
 
-4) Launch the app:
-    ~$ ruby index.rb
+# Launch the app:
 
-5) Open your browser and go to: http://127.0.0.1:4567
+	~$ ruby index.rb
 
-== License
+# Open your browser and go to: http://127.0.0.1:4567
+
+## License
 
 This file is part of PostLogSQL.
 
@@ -53,4 +54,4 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with PostLogSQL.  If not, see <http://www.gnu.org/licenses/>.
+along with PostLogSQL.  If not, see http://www.gnu.org/licenses/.
