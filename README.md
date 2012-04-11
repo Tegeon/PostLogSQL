@@ -12,32 +12,30 @@ The /interface folder contains a simple web interface, useful to check delivery 
 
 ### Daemon
 
-# Put the files in /opt/postlogsql (if you choose a different path change it into master.rb and postlogsql.rb)
-# Create a database and import database.sql:
+1. Put the files in /opt/postlogsql (if you choose a different path change it into master.rb and postlogsql.rb)
+2. Create a database and import database.sql:
 
 	~$ mysql -u user -p db_name < database.sql 
 
-# Configure mysqlconnector.rb with your MySQL parameters
-# Install rubygems, the 'daemons' gem and the ruby-mysql library
-# run it:
+3. Configure mysqlconnector.rb with your MySQL parameters
+4. Install rubygems, the 'daemons' gem and the ruby-mysql library
+5. run it:
 
 	~$ ruby master.rb start
 
 ### Web App
 
-# Install RubyGems
-
-# Install Sinatra and ActiveRecord:
+1. Install RubyGems
+2. Install Sinatra and ActiveRecord:
 
 	~$ sudo gem install sinatra activerecord
 
-# Configure index.rb with your database values
-
-# Launch the app:
+3. Configure index.rb with your database values
+4. Launch the app:
 
 	~$ ruby index.rb
 
-# Open your browser and go to: http://127.0.0.1:4567
+5. Open your browser and go to: http://127.0.0.1:4567
 
 ## License
 
